@@ -8,18 +8,26 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.buildagridapp.data.DataResources
 import com.example.buildagridapp.model.Topic
 import com.example.buildagridapp.ui.theme.BuildAGridAppTheme
 
@@ -39,11 +47,21 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun GridApp(modifier: Modifier = Modifier){
+    TopicList(DataResources.topics);
 }
 
-fun TopicList(topics : List<Topic>){
+@Composable
+fun TopicList(topics : List<Topic>,modifier: Modifier = Modifier){
+    LazyColumn(modifier = modifier) {
+        items(topics.chunked(2)){rowTopic ->
+            Row(modifier = Modifier.fillMaxWidth()) {
+                rowTopic.forEach { topic ->
+                    TopicCards(topic, Modifier.weight(1f))
+                }
+            }
 
-    val totalTopic = topics.size
+        }
+    }
 
 
 
@@ -51,18 +69,26 @@ fun TopicList(topics : List<Topic>){
 }
 
 @Composable
-fun TopicCard(topic : Topic, modifier : Modifier = Modifier){
-        Card(modifier = modifier){
+fun TopicCards(topic : Topic, modifier : Modifier = Modifier){
+        Card(
+            modifier = modifier.padding(8.dp)
+        ){
             Row() {
                 Image(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).height(100.dp),
+                    contentScale = ContentScale.FillHeight,
                     painter = painterResource(topic.drawableRes),
                     contentDescription = stringResource(topic.stringResources)
                 )
-                Column(modifier = Modifier.weight(2f)) {
+                Column(modifier = Modifier
+                    .weight(2f)
+                    .padding(16.dp)
+
+                ) {
                     Text(
                         text = stringResource(topic.stringResources)
                     )
+                    Spacer(modifier = Modifier.padding(8.dp))
                     Text(
                         text = topic.numberOfPic.toString()
                     )
@@ -76,6 +102,7 @@ fun TopicCard(topic : Topic, modifier : Modifier = Modifier){
 @Composable
 fun GreetingPreview() {
     BuildAGridAppTheme {
-        TopicCard(Topic(R.string.film,123,R.drawable.film))
+
+        TopicList(DataResources.topics);
     }
 }
