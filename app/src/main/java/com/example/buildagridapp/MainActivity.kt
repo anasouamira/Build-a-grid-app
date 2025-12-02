@@ -5,8 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -21,6 +23,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -70,31 +73,37 @@ fun TopicList(topics : List<Topic>,modifier: Modifier = Modifier){
 
 @Composable
 fun TopicCards(topic : Topic, modifier : Modifier = Modifier){
-        Card(
-            modifier = modifier.padding(8.dp)
-        ){
-            Row() {
-                Image(
-                    modifier = Modifier.weight(1f).height(100.dp),
-                    contentScale = ContentScale.FillHeight,
-                    painter = painterResource(topic.drawableRes),
-                    contentDescription = stringResource(topic.stringResources)
-                )
-                Column(modifier = Modifier
-                    .weight(2f)
-                    .padding(16.dp)
+    Card(
+        modifier = modifier.padding(8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Image(
+                painter = painterResource(topic.drawableRes),
+                contentDescription = stringResource(topic.stringResources),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            )
 
-                ) {
-                    Text(
-                        text = stringResource(topic.stringResources)
-                    )
-                    Spacer(modifier = Modifier.padding(8.dp))
-                    Text(
-                        text = topic.numberOfPic.toString()
-                    )
-                }
+            Column(
+                modifier = Modifier
+                    .weight(2f)
+                    .padding(8.dp)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = stringResource(topic.stringResources))
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = topic.numberOfPic.toString())
             }
         }
+    }
 
 }
 
