@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,10 +22,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,12 +53,21 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun GridApp(modifier: Modifier = Modifier){
-    TopicList(DataResources.topics);
+
+    Surface(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        val dataResources : List<Topic> = DataResources.topics
+        TopicList(dataResources);
+    }
+
+
 }
 
 @Composable
 fun TopicList(topics : List<Topic>,modifier: Modifier = Modifier){
-    LazyColumn(modifier = modifier) {
+    LazyColumn(modifier = Modifier.background(Color.Gray)) {
         items(topics.chunked(2)){rowTopic ->
             Row(modifier = Modifier.fillMaxWidth()) {
                 rowTopic.forEach { topic ->
